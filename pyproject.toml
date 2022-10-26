@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "askimskytterlag"
+version = "0.0.0"
+description = "Static pages with results from Askim Skytterlag."
+authors = ["Eirik Martiniussen Sylliaas <eirik@sylliaas.no>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^1.10.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+flake8 = "^5.0.4"
+mypy = "^0.982"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
