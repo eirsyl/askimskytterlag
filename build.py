@@ -105,6 +105,11 @@ def build_index_page(*, results: list[Result], out_path: Path) -> None:
         <ul>
             {result_list}
         </ul>
+
+        <br/>
+        <p>Source code at <a
+          href="https://github.com/eirsyl/askimskytterlag"
+        >GitHub</a>, made by Eirik Martiniussen Sylliaas.</p>
     </main>
   </body>
 </html>
