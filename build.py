@@ -78,7 +78,7 @@ def build_index_page(*, results: list[Result], out_path: Path) -> None:
     def sort_func(result: Result) -> tuple[date, str]:
         return result.info.start_date, result.info.name
 
-    sorted_results = sorted(results, key=sort_func)
+    sorted_results = sorted(results, key=sort_func, reverse=True)
 
     result_list = "".join(
         [
