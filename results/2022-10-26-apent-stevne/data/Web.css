@@ -1,0 +1,133 @@
+@font-face {
+	font-family: NRKHode;
+	src:url(NRKEticaSlabSemicnd-Bold.ttf);
+}
+@font-face {
+	font-family: NRKListe;
+	src:url(LFT_Etica_Reg.otf);
+}
+body{
+	background-color: rgba(0,0,0,0.05);
+}
+foot{
+	background-color: rgba(0,0,0,0.05);
+}
+table{
+	border-collapse: collapse;
+	font-size: 1.2em;
+	margin-left:auto;
+	margin-right:auto;
+	cellspacing: 0;
+}
+table#tabhode tr:nth-child(odd){
+	background-color: rgba(0,0,0,0.03);
+}
+table#tabhode tr:nth-child(even){
+	background-color: white;
+}
+td[scope="header"]{
+	background-color:black;
+	color:white;
+}
+table#scroll tr:nth-child(odd){
+	background-color: rgba(0,0,0,0.03);
+}
+table#scroll tr:nth-child(even){
+	background-color: white;
+}
+table#scroll td,th{
+	padding: 5px;
+	border-bottom: 2px solid rgba(0,0,0,0.05);
+}
+H2{
+	text-align:Center;
+	padding: 3px;
+	color:white;
+	background-color: rgb(229,28,48);
+/*	display:table-cell;*/
+	margin-bottom:0px;
+	font-size:2em;
+	font-weight:Bold;
+}
+/*ML Stil*/
+td[scope="rank"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:white;*/
+	font-weight:Bold;
+}
+td[scope="lane"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:white;*/
+}
+td[scope="stnr"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="name"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="club"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="cat"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="shot"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="series"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="stsum"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="tot"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:white;*/
+	font-weight:Bold;
+}
+td[scope="prize"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="mrk"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="cent"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="id"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:black;*/
+}
+td[scope="max"]{
+/*	background-color:rgb(0,0,0,0.05);*/
+/*	color:white;*/
+	font-weight:Bold;
+}
+#blank{
+	background-color:rgba(0,0,0,0.05);
+}
+#banner{
+	background-color:rgba(0,0,0,0.05);
+}
+#contents{
+	background-color:rgba(0,0,0,0.05);
+}
+#Tcont{
+	background-color:rgba(0,0,0,0.05);
+}
+#Lcont{
+	background-color:rgba(0,0,0,0.05);
+}
+#Rcont{
+	background-color:rgba(0,0,0,0.05);
+}
