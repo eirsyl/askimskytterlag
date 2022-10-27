@@ -64,16 +64,6 @@ def build_results(*, results_path: Path) -> list[Result]:
     return results
 
 
-def link_postfix(*, results_path: Path) -> str:
-    index_files = ["index.html", "index.htm", "index.pdf"]
-
-    for index_file in index_files:
-        if (results_path / index_file).exists():
-            return f"/{index_file}"
-
-    return ""
-
-
 def build_index_page(*, results: list[Result], out_path: Path) -> None:
     def sort_func(result: Result) -> tuple[date, str]:
         return result.info.start_date, result.info.name
@@ -82,9 +72,7 @@ def build_index_page(*, results: list[Result], out_path: Path) -> None:
 
     result_list = "".join(
         [
-            f'<li><a href="'
-            f"{result.path.name}{link_postfix(results_path=result.path)}"
-            f'">{result.name()}</a></li>'
+            f'<li><a href="{result.path.name}">{result.name()}</a></li>'
             for result in sorted_results
         ]
     )
@@ -121,6 +109,47 @@ def build_index_page(*, results: list[Result], out_path: Path) -> None:
     index_file_path.write_text(index_page, encoding="utf-8")
 
 
+def maybe_build_redirect_page(results_ouput_path: Path) -> None:
+    index_page = results_ouput_path / "index.html"
+
+    other_root_files = ["index.htm", "index.pdf"]
+
+    if not index_page.exists():
+        other_root = [
+            file for file in other_root_files if (results_ouput_path / file).exists()
+        ]
+
+        if not other_root:
+            raise RuntimeError(
+                "No other root file was found in %s",
+                results_ouput_path,
+            )
+
+        result_index = other_root[0]
+
+        redirect = f"""
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Askim Skytterlag - Redirecting to {result_index}</title>
+    <meta http-equiv="refresh" content="0; URL={result_index}">
+    <link rel="canonical" href="{result_index}">
+  </head>
+  <body>
+    <main>
+        <p>Redirecting...</p>
+    </main>
+  </body>
+</html>
+"""
+
+        index_file_path = results_ouput_path / "index.html"
+        index_file_path.write_text(redirect, encoding="utf-8")
+
+
 def copy_results_files(*, results: list[Result], out_path: Path) -> None:
     def ignore_filter(_: str, names: list[str]) -> list[str]:
         ignores: list[str] = []
@@ -132,12 +161,16 @@ def copy_results_files(*, results: list[Result], out_path: Path) -> None:
         return ignores
 
     for result in results:
+        results_ouput_path = out_path / result.path.name
+
         shutil.copytree(
             result.path,
-            out_path / result.path.name,
+            results_ouput_path,
             symlinks=False,
             ignore=ignore_filter,
         )
+
+        maybe_build_redirect_page(results_ouput_path)
 
 
 def main() -> int:
