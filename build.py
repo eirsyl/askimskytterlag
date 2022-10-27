@@ -65,7 +65,7 @@ def build_results(*, results_path: Path) -> list[Result]:
 
 
 def link_postfix(*, results_path: Path) -> str:
-    index_files = ["index.html", "index.htm"]
+    index_files = ["index.html", "index.htm", "index.pdf"]
 
     for index_file in index_files:
         if (results_path / index_file).exists():
