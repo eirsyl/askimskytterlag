@@ -4,12 +4,14 @@ import sys
 from datetime import date
 from logging import getLogger
 from pathlib import Path
-
+from chardet.universaldetector import UniversalDetector
 from pydantic import BaseModel
 
 logger = getLogger()
 
 RESULT_INFO_FILE = "info.json"
+IGNORE_FILES = [".DS_Store"]
+CHECK_ENCODING = [".htm", ".html", ".css", ".js"]
 
 
 class ResultInfo(BaseModel):
@@ -40,6 +42,47 @@ def empty_directory(*, path: Path) -> None:
             os.unlink(os.path.join(root, f))
         for d in dirs:
             shutil.rmtree(os.path.join(root, d))
+
+
+def tidy_out_folder(*, path: Path) -> None:
+    """
+    Remove unnecessary files and fix encoding.
+    """
+    detector = UniversalDetector()
+
+    for folder, _, files in os.walk(path):
+        # Skip files in the root folder, they are managed
+        # by this script.
+        if folder == str(path):
+            continue
+
+        for file in files:
+            file_path = Path(folder) / file
+
+            # Delete ignored files
+            if file in IGNORE_FILES:
+                file_path.unlink(missing_ok=True)
+                continue
+
+            # Check and rewrite file in UTF-8 if needed
+            if file.endswith(tuple(CHECK_ENCODING)):
+                # Get encoding
+                detector.reset()
+
+                for line in open(file_path, "rb"):
+                    detector.feed(line)
+                    if detector.done:
+                        break
+
+                detector.close()
+                encoding = detector.result["encoding"]
+
+                # Rewrite file with UTF-8 encoding
+                with open(file_path, mode="r", encoding=encoding) as f:
+                    file_content = f.read()
+
+                with open(file_path, mode="w", encoding="utf-8") as f:
+                    f.write(file_content)
 
 
 def build_results(*, results_path: Path) -> list[Result]:
@@ -112,7 +155,7 @@ def build_index_page(*, results: list[Result], out_path: Path) -> None:
 def maybe_build_redirect_page(results_ouput_path: Path) -> None:
     index_page = results_ouput_path / "index.html"
 
-    other_root_files = ["index.htm", "index.pdf"]
+    other_root_files = ["index.htm", "index.pdf", "StartFrame.htm"]
 
     if not index_page.exists():
         other_root = [
@@ -193,6 +236,9 @@ def main() -> int:
 
     # Copy results files
     copy_results_files(results=results, out_path=OUT_PATH)
+
+    # Prepare files in the results folder
+    tidy_out_folder(path=OUT_PATH)
 
     return 0
 
